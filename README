@@ -1,0 +1,9 @@
+description:
+	Calculate breadth of coverage of bam files. Thresholds are 1, 10, 20, 50, 100.
+
+installation:
+	sudo make install
+
+usage:
+	samtools depth -H *bams > cov.txt
+	breadthofcoverage -b BEDFILE -c cov.txt > result.tsv

@@ -58,7 +58,7 @@ thresholds="1 10 20 50 100"
 prefix="% of bases covered at"
 postfix="✕"
 header=$(echo "$thresholds" | sed "s/ /$postfix\t$prefix /g")
-printf "sample\tmean coverage\t%s" "$prefix $header$postfix\n"
+printf "sample\tmean coverage\t%s" "$prefix $header$postfix"
 
 i=3
 while [ $i -le "$NF" ]
@@ -70,6 +70,6 @@ do
                 pass=$(awk -v i=$i -v threshold="$threshold" '$i>=threshold' "$COVERAGE" | wc -l | awk -v bl="$BEDLENGTH" '{print ($1/bl)*100}')
                 line="$line\t$pass"
         done
-        echo "$line"
+        printf "%s" "$line"
         i=$(( i + 1 ))
 done

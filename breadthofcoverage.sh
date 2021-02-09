@@ -56,14 +56,16 @@ NF=$(awk "{ print NF }" "$COVERAGE" | sed 1q)
 
 thresholds="1 10 20 50 100"
 prefix="% of bases covered at"
-postfix="x"
+postfix="✕"
 header=$(echo "$thresholds" | sed "s/ /$postfix\t$prefix /g")
-printf "sample\tmean coverage\t%s" "$prefix $header$postfix"
+printf "sample\tmean coverage\t%s" "$prefix $header$postfix\n"
 
 i=3
 while [ $i -le "$NF" ]
 do
-        line=$(awk -v i=$i '{ total += $i } END { print total/NR }' "$COVERAGE")
+        sample=$(sed 1q "$COVERAGE" | cut -f "$i")
+        mean=$(awk -v i=$i '{ total += $i } END { print total/NR }' "$COVERAGE")
+	line="$sample\t$mean"
         for threshold in $thresholds; do
                 pass=$(awk -v i=$i -v threshold="$threshold" '$i>=threshold' "$COVERAGE" | wc -l | awk -v bl="$BEDLENGTH" '{print ($1/bl)*100}')
                 line="$line\t$pass"

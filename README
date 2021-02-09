@@ -5,5 +5,5 @@ installation:
 	sudo make install
 
 usage:
-	samtools depth -H *bams > cov.txt
+	samtools depth -H -b BEDFILE *bams > cov.txt
 	breadthofcoverage -b BEDFILE -c cov.txt > result.tsv
